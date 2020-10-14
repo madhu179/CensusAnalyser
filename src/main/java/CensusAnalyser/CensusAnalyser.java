@@ -81,10 +81,16 @@ public class CensusAnalyser {
 
 	public int loadStateCodeCSVData(String filePath) throws CensusAnalyserException {
 		int noOfStates = 0;
-		
+
 		String[] file = filePath.split("[.]");
 		if (!file[1].equals("csv")) {
 			throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_FILE_TYPE);
+		}
+
+		if (Files.exists(Paths.get(filePath))) {
+			if (isWrongDelimiter(filePath)) {
+				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_DELIMITER);
+			}
 		}
 
 		try {
