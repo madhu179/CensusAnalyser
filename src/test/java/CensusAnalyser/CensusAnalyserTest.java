@@ -3,13 +3,13 @@ package CensusAnalyser;
 import org.junit.*;
 
 public class CensusAnalyserTest {
-	
-	public static final String FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecensus.csv"; 
+
+	public static final String FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecensus.csv";
 	public static final String WRONG_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\state.csv";
-	
+	public static final String WRONG_TYPE_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecensus.txt";
+
 	@Test
-	public void givenCSVFileNumbeOfRecordsShouldMatch()
-	{
+	public void givenCSVFileNumbeOfRecordsShouldMatch() {
 		CensusAnalyser censusAnalyser = new CensusAnalyser();
 		int count;
 		try {
@@ -18,12 +18,11 @@ public class CensusAnalyserTest {
 		} catch (CensusAnalyserException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Test
-	public void givenWrongCSVFileShouldRaiseCustomException()
-	{
+	public void givenWrongCSVFileShouldRaiseCustomException() {
 		CensusAnalyser censusAnalyser = new CensusAnalyser();
 		int count;
 		try {
@@ -31,7 +30,19 @@ public class CensusAnalyserTest {
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_FILE);
 		}
-		
+
+	}
+
+	@Test
+	public void givenCSVFileWithWrongTypeShouldRaiseCustomException() {
+		CensusAnalyser censusAnalyser = new CensusAnalyser();
+		int count;
+		try {
+			count = censusAnalyser.loadStatesCSVData(WRONG_TYPE_FILE_PATH);
+		} catch (CensusAnalyserException e) {
+			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_FILE_TYPE);
+		}
+
 	}
 
 }

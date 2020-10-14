@@ -4,14 +4,15 @@ public class CensusAnalyserException extends Exception{
 	
 	enum Exception
 	{
-		INCORRECT_FILE
+		INCORRECT_FILE,
+		INCORRECT_FILE_TYPE
 	}
 	
 	Exception exception;
 	
-	public CensusAnalyserException(String message)
+	public CensusAnalyserException(Exception exception)
 	{
-		super(message);
+		this.exception = exception;
 	}
 	
 	public CensusAnalyserException(String message,Exception exception)
