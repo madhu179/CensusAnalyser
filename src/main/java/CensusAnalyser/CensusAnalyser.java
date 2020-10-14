@@ -25,7 +25,6 @@ public class CensusAnalyser {
 		String[] file = filePath.split("[.]");
 		System.out.println(file[1]);
 		if (!file[1].equals("csv")) {
-			System.out.println("count");
 			throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_FILE_TYPE);
 		}
 
@@ -43,10 +42,8 @@ public class CensusAnalyser {
 			Iterable<StateCensusCSV> censusIterable = () -> censusTterator;
 			noOfStates = (int) StreamSupport.stream(censusIterable.spliterator(), false).count();
 
-			System.out.println(noOfStates);
 			return noOfStates;
 		} catch (IOException e) {
-			System.out.println("file");
 			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.INCORRECT_FILE);
 		}
 	}

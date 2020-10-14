@@ -8,7 +8,8 @@ public class CensusAnalyserTest {
 	public static final String WRONG_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\state.csv";
 	public static final String WRONG_TYPE_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecensus.txt";
 	public static final String WRONG_DELIMITER_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\censusdelimiter.csv";
-	
+	public static final String WRONG_HEADER_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\censusheader.csv";
+
 	@Test
 	public void givenCSVFileNumbeOfRecordsShouldMatch() {
 		CensusAnalyser censusAnalyser = new CensusAnalyser();
@@ -45,14 +46,13 @@ public class CensusAnalyserTest {
 		}
 
 	}
-	
+
 	@Test
 	public void givenCSVFileWithWrongDelimiterShouldRaiseCustomException() {
 		CensusAnalyser censusAnalyser = new CensusAnalyser();
 		int count;
 		try {
 			count = censusAnalyser.loadStatesCSVData(WRONG_DELIMITER_FILE_PATH);
-		    System.out.println("abboo");
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_DELIMITER);
 		}
