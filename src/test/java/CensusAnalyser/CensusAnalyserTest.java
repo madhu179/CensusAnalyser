@@ -11,6 +11,7 @@ public class CensusAnalyserTest {
 	public static final String WRONG_HEADER_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\censusheader.csv";
 
 	public static final String STATE_CODE_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecodes.csv";
+	public static final String STATE_CODE_WRONG_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\states.csv";
 
 	@Test
 	public void givenCSVFileNumbeOfRecordsShouldMatch() {
@@ -75,8 +76,26 @@ public class CensusAnalyserTest {
 	@Test
 	public void givenStateCodeCSVFileNumbeOfRecordsShouldMatch() {
 		CensusAnalyser censusAnalyser = new CensusAnalyser();
-		int count = censusAnalyser.loadStateCodeCSVData(STATE_CODE_FILE_PATH);
-		Assert.assertEquals(3, count);
+		int count;
+		try {
+			count = censusAnalyser.loadStateCodeCSVData(STATE_CODE_FILE_PATH);
+			Assert.assertEquals(3, count);
+		} catch (CensusAnalyserException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
+	public void givenWrongStateCodeCSVFileShouldRaiseCustomException() {
+		CensusAnalyser censusAnalyser = new CensusAnalyser();
+		int count;
+		try {
+			count = censusAnalyser.loadStateCodeCSVData(STATE_CODE_WRONG_FILE_PATH);
+		} catch (CensusAnalyserException e) {
+			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_FILE);
+		}
+
 	}
 
 }
