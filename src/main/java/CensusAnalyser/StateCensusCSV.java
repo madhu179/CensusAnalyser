@@ -9,16 +9,16 @@ public class StateCensusCSV {
 		
 	}
 	
-	@CsvBindByName
+	@CsvBindByName(column = "stateName",required = true)
 	public String stateName;
 	
-	@CsvBindByName
+	@CsvBindByName(column ="population",required = true)
 	public int population;
 	
-	@CsvBindByName
+	@CsvBindByName(column ="area",required = true)
 	public int area;
 	
-	@CsvBindByName
+	@CsvBindByName(column ="density",required = true)
 	public int density;
 
 	public String getStateName() {
