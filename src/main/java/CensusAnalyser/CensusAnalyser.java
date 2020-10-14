@@ -19,7 +19,7 @@ public class CensusAnalyser {
 		
 	}
 	
-	public int loadStatesCSVData(String filePath)
+	public int loadStatesCSVData(String filePath) throws CensusAnalyserException
 	{
 		int noOfStates=0;
 		
@@ -33,11 +33,8 @@ public class CensusAnalyser {
 			System.out.println(noOfStates);
 			return noOfStates;
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		
-		return 0;	
+			throw new CensusAnalyserException(e.getMessage(),CensusAnalyserException.Exception.INCORRECT_FILE);
+		}	
 	}
 
 }
