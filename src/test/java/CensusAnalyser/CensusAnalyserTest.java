@@ -10,6 +10,8 @@ public class CensusAnalyserTest {
 	public static final String WRONG_DELIMITER_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\censusdelimiter.csv";
 	public static final String WRONG_HEADER_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\censusheader.csv";
 
+	public static final String STATE_CODE_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecodes.csv";
+
 	@Test
 	public void givenCSVFileNumbeOfRecordsShouldMatch() {
 		CensusAnalyser censusAnalyser = new CensusAnalyser();
@@ -68,6 +70,13 @@ public class CensusAnalyserTest {
 			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_HEADER);
 		}
 
+	}
+
+	@Test
+	public void givenStateCodeCSVFileNumbeOfRecordsShouldMatch() {
+		CensusAnalyser censusAnalyser = new CensusAnalyser();
+		int count = censusAnalyser.loadStateCodeCSVData(STATE_CODE_FILE_PATH);
+		Assert.assertEquals(3, count);
 	}
 
 }

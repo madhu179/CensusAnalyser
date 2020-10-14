@@ -78,5 +78,24 @@ public class CensusAnalyser {
 
 		return false;
 	}
+	
+	
+	public int loadStateCodeCSVData(String filePath) {
+		int noOfStates = 0;
+
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(filePath));
+			CsvToBean<StateCodeCSV> csvToBean = new CsvToBeanBuilder(reader).withType(StateCodeCSV.class)
+					.withSeparator(',').withIgnoreLeadingWhiteSpace(true).build();
+			Iterator<StateCodeCSV> censusTterator = csvToBean.iterator();
+			Iterable<StateCodeCSV> censusIterable = () -> censusTterator;
+			noOfStates = (int) StreamSupport.stream(censusIterable.spliterator(), false).count();
+
+			return noOfStates;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 }
