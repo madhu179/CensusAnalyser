@@ -23,14 +23,17 @@ public class CensusAnalyser {
 		int noOfStates = 0;
 
 		String[] file = filePath.split("[.]");
-		System.out.println(file[1]);
 		if (!file[1].equals("csv")) {
 			throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_FILE_TYPE);
 		}
 
 		if (Files.exists(Paths.get(filePath))) {
-			if (iswrongdelimiter(filePath)) {
+			if (isWrongDelimiter(filePath)) {
 				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_DELIMITER);
+			}
+
+			if (!isRightHeader(filePath)) {
+				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_HEADER);
 			}
 		}
 
@@ -48,7 +51,7 @@ public class CensusAnalyser {
 		}
 	}
 
-	private boolean iswrongdelimiter(String filePath) {
+	private boolean isWrongDelimiter(String filePath) {
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -57,6 +60,19 @@ public class CensusAnalyser {
 				else
 					return true;
 			}
+		} catch (IOException e) {
+		}
+
+		return false;
+	}
+
+	private boolean isRightHeader(String filePath) {
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			line = br.readLine();
+			String[] heads = line.split(",");
+			String[] headings = { "stateName", "population", "area", "density" };
+			return Arrays.equals(heads, headings);
 		} catch (IOException e) {
 		}
 

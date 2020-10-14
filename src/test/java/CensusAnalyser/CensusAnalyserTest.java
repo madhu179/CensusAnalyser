@@ -56,6 +56,17 @@ public class CensusAnalyserTest {
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_DELIMITER);
 		}
+	}
+
+	@Test
+	public void givenCSVFileWithWrongHeaderShouldRaiseCustomException() {
+		CensusAnalyser censusAnalyser = new CensusAnalyser();
+		int count;
+		try {
+			count = censusAnalyser.loadStatesCSVData(WRONG_HEADER_FILE_PATH);
+		} catch (CensusAnalyserException e) {
+			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_HEADER);
+		}
 
 	}
 

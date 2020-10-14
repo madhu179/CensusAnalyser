@@ -6,7 +6,8 @@ public class CensusAnalyserException extends Exception{
 	{
 		INCORRECT_FILE,
 		INCORRECT_FILE_TYPE,
-		INCORRECT_DELIMITER
+		INCORRECT_DELIMITER,
+		INCORRECT_HEADER
 	}
 	
 	Exception exception;
