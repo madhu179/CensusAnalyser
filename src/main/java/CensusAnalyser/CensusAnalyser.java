@@ -71,8 +71,9 @@ public class CensusAnalyser {
 			String line;
 			line = br.readLine();
 			String[] heads = line.split(",");
-			String[] headings = { "stateName", "population", "area", "density" };
-			return Arrays.equals(heads, headings);
+			String[] headingSates = { "stateName", "population", "area", "density" };
+			String[] headingSateCode = { "stateName", "stateCode" };
+			return Arrays.equals(heads, headingSates) || Arrays.equals(heads, headingSateCode);
 		} catch (IOException e) {
 		}
 
@@ -90,6 +91,10 @@ public class CensusAnalyser {
 		if (Files.exists(Paths.get(filePath))) {
 			if (isWrongDelimiter(filePath)) {
 				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_DELIMITER);
+			}
+
+			if (!isRightHeader(filePath)) {
+				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_HEADER);
 			}
 		}
 
