@@ -8,7 +8,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class CSVBuilderCustom<E> implements ICSVBuilder<E> {
 	
-	public Iterator<E> getCSVFileIterator(Reader reader,Class<E> csvClass) throws CensusAnalyserException
+	public Iterator<E> getCSVFileIterator(Reader reader,Class<E> csvClass) throws BuilderException
 	{
 		try {
 		CsvToBean<E> csvToBean = new CsvToBeanBuilder<E>(reader).withType(csvClass)
@@ -18,7 +18,7 @@ public class CSVBuilderCustom<E> implements ICSVBuilder<E> {
 		return csvToBean.iterator();
 		}catch(IllegalStateException e)
 		{
-			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.UNABLE_TO_PARSE);
+			throw new BuilderException(e.getMessage(), BuilderException.Exception_Type.UNABLE_TO_PARSE);
 		}
 		
 	}

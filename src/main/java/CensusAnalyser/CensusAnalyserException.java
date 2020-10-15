@@ -18,6 +18,12 @@ public class CensusAnalyserException extends Exception{
 		this.exception = exception;
 	}
 	
+	public CensusAnalyserException(String message,String exceptionName)
+	{
+		super(message);
+		this.exception = Exception.valueOf(exceptionName);
+	}
+	
 	public CensusAnalyserException(String message,Exception exception)
 	{
 		super(message);
