@@ -22,6 +22,50 @@ public class CensusAnalyser {
 	public int loadStatesCSVData(String filePath) throws CensusAnalyserException {
 		int noOfStates = 0;
 
+		raiseExceptionIfIncorrect(filePath);
+
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(filePath));
+			Iterator<StateCensusCSV> censusTterator = getCSVFileIterator(reader, StateCensusCSV.class);
+			Iterable<StateCensusCSV> censusIterable = () -> censusTterator;
+			noOfStates = (int) StreamSupport.stream(censusIterable.spliterator(), false)
+					                        .count();
+
+			return noOfStates;
+		} catch (IOException e) {
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.INCORRECT_FILE);
+		}
+	}
+
+	public int loadStateCodeCSVData(String filePath) throws CensusAnalyserException {
+		int noOfStates = 0;
+
+		raiseExceptionIfIncorrect(filePath);
+
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(filePath));
+			Iterator<StateCodeCSV> censusTterator = getCSVFileIterator(reader, StateCodeCSV.class);
+			Iterable<StateCodeCSV> censusIterable = () -> censusTterator;
+			noOfStates = (int) StreamSupport.stream(censusIterable.spliterator(), false)
+					                        .count();
+
+			return noOfStates;
+		} catch (IOException e) {
+			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.INCORRECT_FILE);
+		}
+	}
+
+	private <E> Iterator<E> getCSVFileIterator(Reader reader, Class<E> csvClass) {
+		CsvToBean<E> csvToBean = new CsvToBeanBuilder<E>(reader).withType(csvClass)
+				                                                .withSeparator(',')
+				                                                .withIgnoreLeadingWhiteSpace(true)
+				                                                .build();
+
+		return csvToBean.iterator();
+
+	}
+
+	public void raiseExceptionIfIncorrect(String filePath) throws CensusAnalyserException {
 		String[] file = filePath.split("[.]");
 		if (!file[1].equals("csv")) {
 			throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_FILE_TYPE);
@@ -35,19 +79,6 @@ public class CensusAnalyser {
 			if (!isRightHeader(filePath)) {
 				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_HEADER);
 			}
-		}
-
-		try {
-			Reader reader = Files.newBufferedReader(Paths.get(filePath));
-			CsvToBean<StateCensusCSV> csvToBean = new CsvToBeanBuilder(reader).withType(StateCensusCSV.class)
-					.withSeparator(',').withIgnoreLeadingWhiteSpace(true).build();
-			Iterator<StateCensusCSV> censusTterator = csvToBean.iterator();
-			Iterable<StateCensusCSV> censusIterable = () -> censusTterator;
-			noOfStates = (int) StreamSupport.stream(censusIterable.spliterator(), false).count();
-
-			return noOfStates;
-		} catch (IOException e) {
-			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.INCORRECT_FILE);
 		}
 	}
 
@@ -78,38 +109,6 @@ public class CensusAnalyser {
 		}
 
 		return false;
-	}
-
-	public int loadStateCodeCSVData(String filePath) throws CensusAnalyserException {
-		int noOfStates = 0;
-
-		String[] file = filePath.split("[.]");
-		if (!file[1].equals("csv")) {
-			throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_FILE_TYPE);
-		}
-
-		if (Files.exists(Paths.get(filePath))) {
-			if (isWrongDelimiter(filePath)) {
-				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_DELIMITER);
-			}
-
-			if (!isRightHeader(filePath)) {
-				throw new CensusAnalyserException(CensusAnalyserException.Exception.INCORRECT_HEADER);
-			}
-		}
-
-		try {
-			Reader reader = Files.newBufferedReader(Paths.get(filePath));
-			CsvToBean<StateCodeCSV> csvToBean = new CsvToBeanBuilder(reader).withType(StateCodeCSV.class)
-					.withSeparator(',').withIgnoreLeadingWhiteSpace(true).build();
-			Iterator<StateCodeCSV> censusTterator = csvToBean.iterator();
-			Iterable<StateCodeCSV> censusIterable = () -> censusTterator;
-			noOfStates = (int) StreamSupport.stream(censusIterable.spliterator(), false).count();
-
-			return noOfStates;
-		} catch (IOException e) {
-			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.INCORRECT_FILE);
-		}
 	}
 
 }
