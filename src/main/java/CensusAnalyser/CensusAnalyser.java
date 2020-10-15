@@ -25,8 +25,10 @@ public class CensusAnalyser {
 		raiseExceptionIfIncorrect(filePath);
 
 		try {
-			Reader reader = Files.newBufferedReader(Paths.get(filePath));			
-			Iterator<StateCensusCSV> censusTterator = new CSVBuilderCustom().getCSVFileIterator(reader,StateCensusCSV.class);
+			Reader reader = Files.newBufferedReader(Paths.get(filePath));
+			new BuilderFactory();
+			ICSVBuilder csvBuilderCustom = BuilderFactory.createBuilder();
+			Iterator<StateCensusCSV> censusTterator = csvBuilderCustom.getCSVFileIterator(reader,StateCensusCSV.class);
 			noOfStates = getNoOfStates(censusTterator);
 
 			return noOfStates;
@@ -42,7 +44,9 @@ public class CensusAnalyser {
 
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(filePath));
-			Iterator<StateCodeCSV> censusIterator = new CSVBuilderCustom().getCSVFileIterator(reader,StateCodeCSV.class);
+			new BuilderFactory();
+			ICSVBuilder csvBuilderCustom = BuilderFactory.createBuilder();
+			Iterator<StateCodeCSV> censusIterator = csvBuilderCustom.getCSVFileIterator(reader,StateCodeCSV.class);
 			noOfStates = getNoOfStates(censusIterator);
 
 			return noOfStates;
