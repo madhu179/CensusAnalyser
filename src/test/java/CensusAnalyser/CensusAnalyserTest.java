@@ -1,5 +1,7 @@
 package CensusAnalyser;
 
+import java.io.IOException;
+
 import org.junit.*;
 
 import com.google.gson.Gson;
@@ -11,6 +13,7 @@ public class CensusAnalyserTest {
 	public static final String WRONG_TYPE_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecensus.txt";
 	public static final String WRONG_DELIMITER_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\censusdelimiter.csv";
 	public static final String WRONG_HEADER_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\censusheader.csv";
+	public static final String JSON_FILE_PATH_POPULATION = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecensuspopulation.json";
 
 	public static final String STATE_CODE_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecodes.csv";
 	public static final String STATE_CODE_WRONG_FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\states.csv";
@@ -164,6 +167,20 @@ public class CensusAnalyserTest {
 		} catch (CensusAnalyserException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void givenStateCensusDataOnSortingByPopulationShouldMatchSortedResult() {
+		CensusAnalyser censusAnalyser = new CensusAnalyser();
+		try {
+			censusAnalyser.loadStatesCSVData(FILE_PATH);
+			String sortedData = censusAnalyser.getStateDataSortedByPopulation(JSON_FILE_PATH_POPULATION);
+			StateCensusCSV[] stateData = new Gson().fromJson(sortedData,StateCensusCSV[].class);
+			Assert.assertEquals(100000, stateData[0].population);
+			Assert.assertEquals(20000, stateData[5].population);
+		} catch (CensusAnalyserException | IOException e) {
+			e.printStackTrace();
+		} 
 	}
 
 }
