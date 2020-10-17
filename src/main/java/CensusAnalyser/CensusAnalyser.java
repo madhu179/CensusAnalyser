@@ -2,6 +2,7 @@ package CensusAnalyser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -60,6 +61,27 @@ public class CensusAnalyser {
 		} catch (BuilderException e) {
 			throw new CensusAnalyserException(e.getMessage(),e.type.name());
 		}
+	}
+	
+	public String getStateDataSortedByPopulation(String filePath) throws CensusAnalyserException, IOException
+	{
+		if (stateCensusList == null || stateCensusList.size() == 0) {
+            throw new CensusAnalyserException("No Census Data",CensusAnalyserException.Exception.NO_CENSUS_DATA);
+        }
+			
+		Comparator<StateCensusCSV> censusComparator = Comparator.comparing(census->census.population);
+	        this.sortStateData(censusComparator);
+	        Collections.reverse(stateCensusList);
+	        String sortedStateCensus = new Gson().toJson(stateCensusList);     
+	        writeDataToJsonFile(filePath,sortedStateCensus);
+	        return sortedStateCensus;
+	}
+	
+	public void writeDataToJsonFile(String filePath,String sortedStateCensus) throws IOException
+	{
+		FileWriter fileWriter = new FileWriter(filePath);
+		fileWriter.write(sortedStateCensus);
+		fileWriter.close();		
 	}
 	
 	public String getSortedStateNameData() throws CensusAnalyserException
