@@ -14,9 +14,6 @@ import com.capgemini.csvbuilder.BuilderException;
 import com.capgemini.csvbuilder.BuilderFactory;
 import com.capgemini.csvbuilder.ICSVBuilder;
 import com.google.gson.Gson;
-import com.opencsv.*;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 
 public class CensusAnalyser {
 
@@ -86,6 +83,32 @@ public class CensusAnalyser {
 	                if (comparator.compare(census1, census2) > 0) {
 	                	stateCensusList.set(j, census2);
 	                	stateCensusList.set(j + 1, census1);
+	                }
+	            }
+	        }
+	}
+	
+	public String getSortedStateCodeData() throws CensusAnalyserException
+	{
+		if (stateCodeList == null || stateCodeList.size() == 0) {
+            throw new CensusAnalyserException("No Census Data",CensusAnalyserException.Exception.NO_CENSUS_DATA);
+        }
+		
+		Comparator<StateCodeCSV> censusComparator = Comparator.comparing(census->census.stateCode);
+	        this.sortStateCodeData(censusComparator);
+	        String sortedStateCodes = new Gson().toJson(stateCodeList);
+	        return sortedStateCodes;
+	}
+	
+	private void sortStateCodeData(Comparator<StateCodeCSV> comparator)
+	{
+		 for (int i = 0; i < stateCodeList.size() - 1; i++) {
+	            for (int j = 0; j < stateCodeList.size() - i - 1; j++) {
+	            	StateCodeCSV census1 = stateCodeList.get(j);
+	            	StateCodeCSV census2 = stateCodeList.get(j + 1);
+	                if (comparator.compare(census1, census2) > 0) {
+	                	stateCodeList.set(j, census2);
+	                	stateCodeList.set(j + 1, census1);
 	                }
 	            }
 	        }
