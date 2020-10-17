@@ -2,6 +2,8 @@ package CensusAnalyser;
 
 import org.junit.*;
 
+import com.google.gson.Gson;
+
 public class CensusAnalyserTest {
 
 	public static final String FILE_PATH = "C:\\Users\\MADHUBABU\\eclipse-workspace\\CensusAnalyser\\statecensus.csv";
@@ -134,6 +136,20 @@ public class CensusAnalyserTest {
 			Assert.assertEquals(e.exception, CensusAnalyserException.Exception.INCORRECT_HEADER);
 		}
 
+	}
+	
+	@Test
+	public void givenStateCensusDataOnSortingByStateNameShouldMatchSortedResult() {
+		CensusAnalyser censusAnalyser = new CensusAnalyser();
+		try {
+			censusAnalyser.loadStatesCSVData(FILE_PATH);
+			String sortedData = censusAnalyser.getSortedStateNameData();
+			StateCensusCSV[] stateData = new Gson().fromJson(sortedData,StateCensusCSV[].class);
+			Assert.assertEquals("Andhra Pradesh", stateData[0].stateName);
+			Assert.assertEquals("West Bengal", stateData[5].stateName);
+		} catch (CensusAnalyserException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
