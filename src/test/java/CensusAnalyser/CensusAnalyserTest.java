@@ -151,5 +151,19 @@ public class CensusAnalyserTest {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void givenStateCodeDataOnSortingByStateCodeShouldMatchSortedResult() {
+		CensusAnalyser censusAnalyser = new CensusAnalyser();
+		try {
+			censusAnalyser.loadStateCodeCSVData(STATE_CODE_FILE_PATH);
+			String sortedData = censusAnalyser.getSortedStateCodeData();
+			StateCodeCSV[] stateData = new Gson().fromJson(sortedData,StateCodeCSV[].class);
+			Assert.assertEquals("AP", stateData[0].stateCode);
+			Assert.assertEquals("WB", stateData[5].stateCode);
+		} catch (CensusAnalyserException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
