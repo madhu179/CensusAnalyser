@@ -63,6 +63,20 @@ public class CensusAnalyser {
 		}
 	}
 	
+	public String getStateDataSortedByArea(String filePath) throws CensusAnalyserException, IOException
+	{
+		if (stateCensusList == null || stateCensusList.size() == 0) {
+            throw new CensusAnalyserException("No Census Data",CensusAnalyserException.Exception.NO_CENSUS_DATA);
+        }
+			
+		Comparator<StateCensusCSV> censusComparator = Comparator.comparing(census->census.area);
+        this.sortStateData(censusComparator);
+        Collections.reverse(stateCensusList);
+        String sortedStateCensus = new Gson().toJson(stateCensusList);  
+        writeDataToJsonFile(filePath,sortedStateCensus);
+        return sortedStateCensus;
+	}
+	
 	public String getStateDataSortedByDensity(String filePath) throws CensusAnalyserException, IOException
 	{
 		if (stateCensusList == null || stateCensusList.size() == 0) {
