@@ -23,25 +23,20 @@ public class CensusAnalyser {
 	}
 
 	public int loadStatesCSVData(String filePath) throws CensusAnalyserException {
-		int noOfStates = 0;
-		
 		raiseExceptionIfIncorrect(filePath);
 
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(filePath));
 			new BuilderFactory();
 			ICSVBuilder csvBuilderCustom = BuilderFactory.createBuilder();
-			Iterator<StateCensusCSV> censusTterator;
-			try {
-				censusTterator = csvBuilderCustom.getCSVFileIterator(reader,StateCensusCSV.class);
-			} catch (BuilderException e) {
-				throw new CensusAnalyserException(e.getMessage(),e.type.name());
-			}
-			noOfStates = getNoOfStates(censusTterator);
 
-			return noOfStates;
+				List<StateCensusCSV> censusList = csvBuilderCustom.getCSVFileList(reader,StateCensusCSV.class);	
+            
+			return censusList.size();
 		} catch (IOException e) {
 			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.INCORRECT_FILE);
+		}catch (BuilderException e) {
+			throw new CensusAnalyserException(e.getMessage(),e.type.name());
 		}
 	}
 	
@@ -54,17 +49,16 @@ public class CensusAnalyser {
 			Reader reader = Files.newBufferedReader(Paths.get(filePath));
 			new BuilderFactory();
 			ICSVBuilder csvBuilderCustom = BuilderFactory.createBuilder();
-			Iterator<StateCodeCSV> censusIterator;
-			try {
-				censusIterator = csvBuilderCustom.getCSVFileIterator(reader,StateCodeCSV.class);
-			} catch (BuilderException e) {
-				throw new CensusAnalyserException(e.getMessage(),e.type.name());
-			}
-			noOfStates = getNoOfStates(censusIterator);
 
-			return noOfStates;
+			List<StateCodeCSV> censusList = csvBuilderCustom.getCSVFileList(reader,StateCodeCSV.class);
+			
+
+
+			return censusList.size();
 		} catch (IOException e) {
 			throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.Exception.INCORRECT_FILE);
+		} catch (BuilderException e) {
+			throw new CensusAnalyserException(e.getMessage(),e.type.name());
 		}
 	}
 	

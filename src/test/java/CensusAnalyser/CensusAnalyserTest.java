@@ -22,7 +22,7 @@ public class CensusAnalyserTest {
 		int count;
 		try {
 			count = censusAnalyser.loadStatesCSVData(FILE_PATH);
-			Assert.assertEquals(2, count);
+			Assert.assertEquals(6, count);
 		} catch (CensusAnalyserException e) {
 			e.printStackTrace();
 		}
@@ -82,7 +82,7 @@ public class CensusAnalyserTest {
 		int count;
 		try {
 			count = censusAnalyser.loadStateCodeCSVData(STATE_CODE_FILE_PATH);
-			Assert.assertEquals(3, count);
+			Assert.assertEquals(6, count);
 		} catch (CensusAnalyserException e) {
 			e.printStackTrace();
 		}
